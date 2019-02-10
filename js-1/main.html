@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Project 1</title>
+		<link rel="stylesheet" href="../assets/styles.css">
+	</head>
+	<body>
+		<h1>Cella Rule 150</h1>
+		<h4>Team MMX</h4>
+		<canvas id="grid" width=1600" height="1600"></canvas>
+	</body>
+	<script src="../assets/methods.js"></script>
+	<script>
+		var canvas = document.getElementById( "grid" );
+		var context = canvas.getContext( "2d" );
+		//	Initialize cells in grid to zero
+		var cells = [...Array(400)].map(c => Array(400).fill(0));
+		//	Setup grid
+		setup( context, cells );
+		//document.write(cells.map(row => row[0])[199]);
+		populateCells( context, cells );
+	</script>
+</html>
