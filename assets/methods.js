@@ -57,18 +57,28 @@ function populateCells( ctx, cells, curr_row ) {
 			//	Get next generation value
 			var nextGenValue = getNextGenValue(subcells);
 			nextGenRow.push(nextGenValue);
+		
+			// Draw in the square
 			if(nextGenValue === 1) {
-				draw_rect(ctx, "black", curr_row+1, curr_col);
+				draw_rect(ctx, "black", curr_row + 1, curr_col);
 			}
-
+			
 			curr_col++;
-			//return curr_col === 201;
 		});
 		
+		// Update cells array with new nextGenRow
+		for(var currIndex = 0; currIndex < nextGenRow.length; currIndex++) {
+			cells[curr_row + 1][currIndex] = nextGenRow[currIndex];
+		}
+		// Reset length of nextGenRow 0 for the next cell row
+		nextGenRow.length = 0;
+		
 		curr_row++;
-		// Stop after first generation
-		return curr_row === 1;
+		
+		// Stop after 400th generation (Really slow)
+		return curr_row === 10;
 	});
+	
 }
 
 function getNextGenValue( subcells ) {
