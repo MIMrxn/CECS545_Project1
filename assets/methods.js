@@ -73,10 +73,11 @@ function populateCells( ctx, cells, curr_row ) {
 		// Reset length of nextGenRow 0 for the next cell row
 		nextGenRow.length = 0;
 		
+		// Increment the row to go to the next generation
 		curr_row++;
 		
-		// Stop after 400th generation (Really slow)
-		return curr_row === 10;
+		// Stop after 400th generation (Really slow.. stop after 20th for now and QA the rest later)
+		return curr_row === 20;
 	});
 	
 }
