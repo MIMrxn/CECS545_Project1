@@ -17,7 +17,9 @@
 		var cells = [...Array(400)].map(c => Array(400).fill(0));
 		//	Setup grid
 		setup( context, cells );
-		//document.write(cells.map(row => row[0])[199]);
-		populateCells( context, cells );
+		//	Populate grid
+		for(var row=0; row<399; row++) {
+			populateCells( context, cells, row);
+		}
 	</script>
 </html>

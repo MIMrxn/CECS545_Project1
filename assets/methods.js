@@ -20,66 +20,48 @@ function setup( ctx, cells ) {
 	ctx.scale(4, 4);
   	ctx.fillRect(0, 0, canvas.width, canvas.height);
   	draw_grid( ctx, 1, 50, 'black', 'blue' );
-  	//draw_rect( ctx, "red", "black");
   	draw_rect( ctx, "black", 0, 199);
 }
 
 //	Populates cells by finding next generation cells
 function populateCells( ctx, cells, curr_row ) {
-	var curr_row = 0;
-	var nextGenRow = [];
-	
-	//	Split current generation row into subcells of size 3
-	//	Currently testing so using some function instead of forEach
-	//	forEach will be used in final version
-	cells.some(function(row) {
-		//document.write(curr_row + ": " + row);
-
-		var curr_col = 0;
-		row.some(function(col) {
+	//	Display population of the grid every 50 milliseconds
+	var gridAnimation = setInterval(function() {
+		for(var curr_col = 0; curr_col<399; curr_col++) {
 			var subcells = [];
 			
 			//	Handle corner cases as empty when no cell is available
 			if ( curr_col === 0 ) {
 				subcells.push(0);
-				subcells.push(row[curr_col]);
-				subcells.push(row[curr_col+1]);
+				subcells.push(cells[curr_row][curr_col]);
+				subcells.push(cells[curr_row][curr_col+1]);
 			} else if ( curr_col === 399 ) {
-				subcells.push(row[curr_col-1]);
-				subcells.push(row[curr_col]);
+				subcells.push(cells[curr_row][curr_col-1]);
+				subcells.push(cells[curr_row][curr_col]);
 				subcells.push(0)
 			} else {
-				subcells.push(row[curr_col-1]);
-				subcells.push(row[curr_col]);
-				subcells.push(row[curr_col+1])
+				subcells.push(cells[curr_row][curr_col-1]);
+				subcells.push(cells[curr_row][curr_col]);
+				subcells.push(cells[curr_row][curr_col+1])
 			}
 
 			//	Get next generation value
 			var nextGenValue = getNextGenValue(subcells);
-			nextGenRow.push(nextGenValue);
 		
 			// Draw in the square
 			if(nextGenValue === 1) {
 				draw_rect(ctx, "black", curr_row + 1, curr_col);
 			}
-			
-			curr_col++;
-		});
-		
-		// Update cells array with new nextGenRow
-		for(var currIndex = 0; currIndex < nextGenRow.length; currIndex++) {
-			cells[curr_row + 1][currIndex] = nextGenRow[currIndex];
+
+			// Update cells
+			cells[curr_row+1][curr_col] = nextGenValue;
 		}
-		// Reset length of nextGenRow 0 for the next cell row
-		nextGenRow.length = 0;
-		
-		// Increment the row to go to the next generation
-		curr_row++;
-		
-		// Stop after 400th generation (Really slow.. stop after 20th for now and QA the rest later)
-		return curr_row === 20;
-	});
-	
+
+		//	End interval animation before reaching the last nine rows
+		if(curr_row === 390) {
+			clearInterval(gridAnimation);
+		}
+	}, 50);
 }
 
 function getNextGenValue( subcells ) {
